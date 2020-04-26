@@ -9,6 +9,9 @@ const buildMatrix = (cols, rows) => {
     for (let x = 0; x < cols; x++)
       row.push({
           id: id++,
+          visible: true,
+          left: false,
+          right: false,
           flag: false,
           mine: false,
           mineCount: 0,
@@ -55,4 +58,39 @@ const aroundCells = (matrix, x, y) => {
     }
   }
   return cells;
+}
+
+const cellById = (matrix, id) => {
+  for (let y = 0;y < matrix.length; y++){
+    for (let x = 0; x < matrix[y].length; x++){
+      if (matrix[y][x].id === id) return matrix[y][x];
+    }
+  }
+  return false;
+}
+
+const matrixHTML = matrix => {
+  const gameDiv = document.createElement('div');
+  gameDiv.classList.add('minesweeper');
+
+  for (let y = 0; y < matrix.length; y++) {
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('row');
+    for (let x = 0; x < matrix[y].length; x++){
+      const cell = matrix[y][x];
+      const imgDiv = document.createElement('img');
+      imgDiv.draggable = false;
+      imgDiv.oncontextmenu = () => false;
+      imgDiv.setAttribute('cellid', cell.id);
+      rowDiv.append(imgDiv);
+      if (!cell.visible) imgDiv.src = './img/facingDown.png';
+      else if (cell.mine) imgDiv.src = './img/bomb.png';
+      else if (cell.flag) imgDiv.src = './img/flagged.png';
+      else if (cell.mineCount) imgDiv.src =  `./img/${cell.mineCount}.png`;
+      else imgDiv.src = './img/0.png'
+    }
+    gameDiv.append(rowDiv);
+  }
+  
+  return gameDiv;
 }

@@ -2,20 +2,20 @@
   text-align: center;
 }
 
-.mineswepeer {
+.minesweeper {
   border: 3px solid blue;
   padding: 4px;
   display: inline-block;
 }
 
-.mineswepeer div {
+.minesweeper div {
   margin: 0;
   padding: 0;
   height: 50px;
   margin: 1px;
 }
 
-.mineswepeer img {
+.minesweeper img {
   width: 50px;
   height: 50px;
   margin: 1px;
