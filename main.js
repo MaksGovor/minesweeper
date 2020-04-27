@@ -1,6 +1,6 @@
-const matrix = buildMatrix(10, 10);
+const matrix = buildMatrix(40, 40);
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 140; i++) {
   randomMine(matrix);
 };
 
@@ -25,11 +25,11 @@ function mousedownHandler (event) {
   const {cell, left, right} = getInfo(event);
   if (left) cell.left = true;
   if (right) cell.right = true;
-  
   if (cell.right && cell.left) {
     bothHandler(cell);
   }
 
+  updateData();
 };
 
 
@@ -38,18 +38,22 @@ function mouseupHandler (event) {
   const both = cell.right && cell.left && (left || right);
   const leftClick = !both && cell.left && left;
   const rightClick = !both && cell.right && right;
-
+  
+  if (both) forEach(matrix, x => x.poten = false)
   if (left) cell.left = false;
   if (right) cell.right = false;
   if (leftClick) leftHandler(cell);
   else if (rightClick) rightHandler(cell);
 
+  updateData();
 };
 
 function mouseleaveHandler (event) {
   const info = getInfo(event);
   info.cell.left = false;
   info.cell.rigth = false;
+
+  updateData();
 }
 
 const getInfo = event => {
@@ -61,14 +65,31 @@ const getInfo = event => {
   }
 }
 
-function leftHandler () {
-  console.log('left');
+function leftHandler (cell) {
+  if (cell.visible || cell.flag) return;
+  cell.visible = true;
+
+  if (!cell.mine && !cell.mineCount) {
+    openSpread(matrix, cell.x, cell.y);
+  }
 };
 
-function rightHandler () {
-  console.log('right');
+function rightHandler (cell) {
+  if (!cell.visible) cell.flag = !cell.flag;
+
 };
 
-function bothHandler () {
-  console.log('both')
+function bothHandler (cell) {
+  if (!cell.visible || !cell.mineCount) return;
+  const cells = aroundCells(matrix, cell.x, cell.y);
+  const flags = cells.filter(x => x.flag).length;
+  
+  if (flags === cell.mineCount)
+    cells
+      .filter(x => !x.flag && !x.visible)
+      .forEach(cell => { 
+          cell.visible = true;
+          openSpread(matrix, cell.x, cell.y);
+        })
+  else cells.filter(x => !x.flag && !x.visible).forEach(cell => cell.poten = true)
 };

@@ -9,12 +9,13 @@ const buildMatrix = (cols, rows) => {
     for (let x = 0; x < cols; x++)
       row.push({
           id: id++,
-          visible: true,
+          visible: false,
           left: false,
           right: false,
           flag: false,
           mine: false,
           mineCount: 0,
+          poten: false,
           x,
           y,
       });
@@ -83,14 +84,55 @@ const matrixHTML = matrix => {
       imgDiv.oncontextmenu = () => false;
       imgDiv.setAttribute('cellid', cell.id);
       rowDiv.append(imgDiv);
-      if (!cell.visible) imgDiv.src = './img/facingDown.png';
+      if (cell.flag) imgDiv.src = './img/flag.png';
+      else if (cell.poten) imgDiv.src = './img/poten.png';
+      else if (!cell.visible) imgDiv.src = './img/facingDown.png';
       else if (cell.mine) imgDiv.src = './img/bomb.png';
-      else if (cell.flag) imgDiv.src = './img/flagged.png';
-      else if (cell.mineCount) imgDiv.src =  `./img/${cell.mineCount}.png`;
-      else imgDiv.src = './img/0.png'
+      else if (cell.mineCount) imgDiv.src = `./img/${cell.mineCount}.png`;
+      else imgDiv.src = './img/0.png';
     }
     gameDiv.append(rowDiv);
   }
   
   return gameDiv;
+}
+
+const forEach = (matrix, handler) => {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++){
+      handler(matrix[y][x]);
+    }
+  }
+}
+
+const openSpread = (matrix, x, y) => {
+  const cell = findCell(matrix, x, y);
+  if (cell.mineCount || cell.mine || cell.flag) return;
+  
+  forEach(matrix, x => x._mark = false);
+  
+  cell._mark = true;
+  let flag = true;
+  while(flag){
+    flag = false;
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[y].length; x++){
+        const cell = matrix[y][x];
+        if(!cell._mark || cell.mineCount) continue;
+        const cells = aroundCells(matrix, x, y);
+        for (const cell of cells) {
+          if (cell._mark) continue;
+          if (!cell.mine || !cell.flag) {
+            cell._mark = true;
+            flag = true;
+          }
+        }
+      }
+    }
+  }
+  forEach(matrix, x => {
+      if (x._mark) x.visible = true;
+      delete x._mark
+    });
+
 }
