@@ -136,3 +136,35 @@ const openSpread = (matrix, x, y) => {
     });
 
 }
+
+const win = (matrix) => {
+  const flags = [];
+  const mines = [];
+  forEach(matrix, cell => {
+    if (cell.flag) flags.push(cell);
+    if (cell.mine) mines.push(cell);
+  });
+  if (flags.length !== mines.length) return false;
+  for (const cell of mines) {
+    if (!cell.flag) return false;
+  }
+
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++){
+      const cell = matrix[y][x];
+      if (!cell.mine && !cell.visible) return false;
+    }
+  }
+
+  return true;
+}
+
+const lose = (matrix) => {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++){
+      const cell = matrix[y][x];
+      if (cell.mine && cell.visible) return true;
+    }
+  }
+  return false;
+}

@@ -1,10 +1,23 @@
-const matrix = buildMatrix(40, 40);
+let matrix = null;
+let running = false;
 
-for (let i = 0; i < 140; i++) {
-  randomMine(matrix);
-};
+document
+  .querySelector('button')
+  .addEventListener('click', () => init(10, 10, 10))
+
+
+const init = (col, row, mines) => {
+  matrix = buildMatrix(col, row);
+  running = true;
+  for (let i = 0; i < mines; i++) {
+    randomMine(matrix);
+  };
+
+  updateData();
+}
 
 const updateData = () => {
+  if (!running) return;
   const gameDiv = matrixHTML(matrix);
   const appDiv = document.querySelector('#app');
   appDiv.innerHTML = '';
@@ -15,11 +28,19 @@ const updateData = () => {
       img.addEventListener('mousedown', mousedownHandler);
       img.addEventListener('mouseup', mouseupHandler);
       img.addEventListener('mouseleave', mouseleaveHandler);
-
     })
+
+  if (lose(matrix)) {
+    alert('LOSE');
+    running = false;
+  }
+  else if (win(matrix)){
+    alert('WIN');
+    running = false;
+  }
 }
 
-updateData();
+
 
 function mousedownHandler (event) {
   const {cell, left, right} = getInfo(event);
@@ -93,3 +114,5 @@ function bothHandler (cell) {
         })
   else cells.filter(x => !x.flag && !x.visible).forEach(cell => cell.poten = true)
 };
+
+init(10, 10, 10);
