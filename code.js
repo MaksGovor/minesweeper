@@ -88,8 +88,7 @@ const matrixHTML = matrix => {
       else if (cell.poten) imgDiv.src = './img/poten.png';
       else if (!cell.visible) imgDiv.src = './img/facingDown.png';
       else if (cell.mine) imgDiv.src = './img/bomb.png';
-      else if (cell.mineCount) imgDiv.src = `./img/${cell.mineCount}.png`;
-      else imgDiv.src = './img/0.png';
+      else imgDiv.src = `./img/${cell.mineCount}.png`;
     }
     gameDiv.append(rowDiv);
   }

@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.divs {
+  text-align: center;
+}
+
 .minesweeper {
   border: 3px solid blue;
   padding: 4px;
@@ -20,3 +24,4 @@
   height: 50px;
   margin: 1px;
 }
+
