@@ -1,5 +1,14 @@
 #app {
   text-align: center;
+  background: rgb(87, 85, 85);
+  color: white;
+  border-radius: 1em;
+  padding: 1em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
 }
 
 .divs {
@@ -25,3 +34,6 @@
   margin: 1px;
 }
 
+body {
+  background-image: url("./img/poten.png");
+}
