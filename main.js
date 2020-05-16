@@ -18,6 +18,21 @@ const init = (col, row, mines) => {
 
 const updateData = () => {
   if (!running) return;
+
+  if (lose(matrix)) {
+    forEach(matrix, x => {
+      if(x.mine){
+        x.visible = true;
+      } 
+    })
+    alert('LOSE');
+    running = false;
+  }
+  else if (win(matrix)){
+    alert('WIN');
+    running = false;
+  }
+
   const gameDiv = matrixHTML(matrix);
   const appDiv = document.querySelector('#app');
   appDiv.innerHTML = '';
@@ -29,15 +44,6 @@ const updateData = () => {
       img.addEventListener('mouseup', mouseupHandler);
       img.addEventListener('mouseleave', mouseleaveHandler);
     })
-
-  if (lose(matrix)) {
-    alert('LOSE');
-    running = false;
-  }
-  else if (win(matrix)){
-    alert('WIN');
-    running = false;
-  }
 }
 
 
