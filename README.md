@@ -4,6 +4,7 @@ Good old sapper game.💣
 ## Table of contents
   * [Minesweeper](#minesweeper)
   * [How to play](#how-to-play)
+  * [Screenshots](#screenshots)
   * [License](#license)
   * [Contact](#contact)
 
