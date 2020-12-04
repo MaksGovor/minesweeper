@@ -1,6 +1,8 @@
 # Minesweeper
 Good old sapper game.💣
 
+*This version is outdated.*
+
 ## Table of contents
   * [Minesweeper](#minesweeper)
   * [How to play](#how-to-play)
